@@ -4,17 +4,18 @@
 
 #define DELIM " \t"
 
-int math_stuff(const char *str);
+char *math_stuff(const char *str);
 
 int main(){
     char *input = readline("> ");
-    int res = math_stuff(input);
-    printf("Result: %d\n", res);
+    char *res = math_stuff(input);
+    printf("%s\n", res);
+    free(res);
     free(input);
     return 0;
 }
 
-int math_stuff(const char *str){
+char *math_stuff(const char *str){
     char *str_temp = strdup(str);
     int str_len = strlen(str_temp);
     char *p = strtok(str_temp, DELIM);
@@ -38,7 +39,20 @@ int math_stuff(const char *str){
         }
     p = strtok(NULL, DELIM);
     }
+    int counter = 0, temp_res = res;
+    while(temp_res){
+        counter += 1;
+        temp_res /= 10;
+    }
+    if(!counter){
+        counter++;
+    }
+    char *result = malloc(counter + 4 * sizeof(char));
+    snprintf(result, sizeof result, " = %d", res); 
+    char *res_str = strdup(str);
+    strcat(res_str, result);
+    free(result);
     free(str_temp);
-return res;
+    return res_str;
 }
  
