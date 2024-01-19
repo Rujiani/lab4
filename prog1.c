@@ -8,8 +8,15 @@ char *math_stuff(const char *str);
 
 int main(){
     char *input = readline("> ");
+    if(!input){
+        printf("EOF!\n");
+        free(input);
+        return -1;
+    }
     char *res = math_stuff(input);
-    printf("%s\n", res);
+    if(res){
+        printf("%s\n", res);
+    }
     free(res);
     free(input);
     return 0;
@@ -19,23 +26,38 @@ char *math_stuff(const char *str){
     char *str_temp = strdup(str);
     int str_len = strlen(str_temp);
     char *p = strtok(str_temp, DELIM);
-    long res = strtol(p, NULL, 10);
+    long res;
+    if(!(res = strtol(p, NULL, 10))){
+        printf("DURASHkA!!!!\n");
+        free(str_temp);
+        return 0;
+    }
     long num;
     p = strtok(NULL, DELIM);
     while(p){
         if(strcmp(p, "+") == 0){
             p = strtok(NULL, DELIM);    
-            num = strtol(p, NULL, 10);;
+            if(!(num = strtol(p, NULL, 10))){
+                printf("DURASHkA!!!!\n");
+                free(str_temp);
+                return 0;
+            }
             res += num;
         }
         else if(strcmp(p, "-") == 0){
             p = strtok(NULL, DELIM);
-            num = strtol(p, NULL, 10);
+            if(!(num = strtol(p, NULL, 10))){
+                printf("DURASHkA!!!!\n");
+                free(str_temp);
+                return 0;
+            }
             res -= num;
         }
         else{
-             printf("ERROR!!!!!!\n");
-             break;
+            printf("ERROR!!!!!!\n");
+            free(str_temp);
+            printf("DURASHkA!!!!\n");
+            break;
         }
     p = strtok(NULL, DELIM);
     }
